@@ -110,13 +110,17 @@ const { apiUrl, recaptchaSiteKey } = Astro.props;
     card.setAttribute('button-label', 'Sending…');
     errorMsg!.hidden = true;
 
-    try {
-      const recaptchaKey = form.dataset.recaptchaKey;
-      let recaptchaToken: string | null = null;
-      if (recaptchaKey && (window as any).grecaptcha) {
+    const recaptchaKey = form.dataset.recaptchaKey;
+    let recaptchaToken: string | null = null;
+    if (recaptchaKey && (window as any).grecaptcha) {
+      try {
         recaptchaToken = await (window as any).grecaptcha.execute(recaptchaKey, { action: 'contact_submit' });
+      } catch (err) {
+        console.error('reCAPTCHA execution failed:', err);
       }
+    }
 
+    try {
       const payload: Record<string, unknown> = {
         name,
         email,
@@ -137,9 +141,11 @@ const { apiUrl, recaptchaSiteKey } = Astro.props;
         form.hidden = true;
         successEl!.hidden = false;
       } else {
-        throw new Error('non-200');
+        console.error('Contact API returned:', res.status, await res.text());
+        throw new Error(`API error ${res.status}`);
       }
-    } catch {
+    } catch (err) {
+      console.error('Form submission failed:', err);
       errorMsg!.hidden = false;
       card.removeAttribute('button-disabled');
       card.setAttribute('button-label', 'Send Message');
