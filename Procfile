@@ -1,1 +1,1 @@
-web: node ./dist/server/entry.mjs
+web: npm run dev
