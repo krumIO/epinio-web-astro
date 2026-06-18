@@ -1,29 +1,11 @@
 ---
-interface Props {
-  apiUrl: string;
-  recaptchaSiteKey?: string;
-}
-
-const { apiUrl, recaptchaSiteKey } = Astro.props;
 ---
 
 <section class="contact-section">
   <div class="page-container">
     <div class="contact-layout">
       <div class="form-wrapper">
-      {recaptchaSiteKey && (
-        <script
-          src={`https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`}
-          async
-          defer
-        ></script>
-      )}
-      <form id="contact-form" data-api-url={apiUrl} data-recaptcha-key={recaptchaSiteKey ?? ''} novalidate>
-        <trailhand-form-card
-          id="contact-card"
-          button-label="Send Message"
-          shadow
-        >
+        <trailhand-form-card shadow>
           <trailhand-form-row columns="2">
             <trailhand-text-input
               name="name"
@@ -58,16 +40,7 @@ const { apiUrl, recaptchaSiteKey } = Astro.props;
             ></trailhand-text-area>
           </trailhand-form-row>
         </trailhand-form-card>
-      </form>
-
-      <p class="error-msg" id="contact-error" hidden>Something went wrong. Please try again.</p>
-
-      <div id="contact-success" class="success-msg" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <h3>Thank you!</h3>
-        <p>We'll be in touch with you shortly.</p>
       </div>
-    </div>
 
       <div class="contact-header">
         <h2 class="section-title">Get in Touch</h2>
@@ -83,74 +56,6 @@ const { apiUrl, recaptchaSiteKey } = Astro.props;
   import '@krumio/trailhand-ui/components/th-form-card';
   import '@krumio/trailhand-ui/components/text-input';
   import '@krumio/trailhand-ui/components/text-area';
-
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const card = document.getElementById('contact-card') as HTMLElement | null;
-  const errorMsg = document.getElementById('contact-error') as HTMLElement | null;
-  const successEl = document.getElementById('contact-success') as HTMLElement | null;
-
-  card?.addEventListener('form-card-submit', async () => {
-    if (!form) return;
-
-    const data = new FormData(form);
-    const name = (data.get('name') as string)?.trim();
-    const email = (data.get('email') as string)?.trim();
-    const company = (data.get('company') as string)?.trim();
-    const message = (data.get('message') as string)?.trim();
-
-    if (!name || !email || !message) return;
-
-    const apiUrl = form.dataset.apiUrl;
-    if (!apiUrl) {
-      errorMsg!.hidden = false;
-      return;
-    }
-
-    card.setAttribute('button-disabled', '');
-    card.setAttribute('button-label', 'Sending…');
-    errorMsg!.hidden = true;
-
-    const recaptchaKey = form.dataset.recaptchaKey;
-    let recaptchaToken: string | null = null;
-    if (recaptchaKey && (window as any).grecaptcha) {
-      try {
-        recaptchaToken = await (window as any).grecaptcha.execute(recaptchaKey, { action: 'contact_submit' });
-      } catch (err) {
-        console.error('reCAPTCHA execution failed:', err);
-      }
-    }
-
-    try {
-      const payload: Record<string, unknown> = {
-        name,
-        email,
-        company,
-        projectDescription: message,
-        interests: ['Epinio'],
-        source: 'epinio',
-      };
-      if (recaptchaToken) payload.recaptchaToken = recaptchaToken;
-
-      const res = await fetch(`${apiUrl}/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        form.hidden = true;
-        successEl!.hidden = false;
-      } else {
-        console.error('Contact API returned:', res.status, await res.text());
-        throw new Error(`API error ${res.status}`);
-      }
-    } catch (err) {
-      console.error('Form submission failed:', err);
-      errorMsg!.hidden = false;
-      card.removeAttribute('button-disabled');
-      card.setAttribute('button-label', 'Send Message');
-    }
-  });
 </script>
 
 <style>
@@ -198,41 +103,5 @@ const { apiUrl, recaptchaSiteKey } = Astro.props;
     .contact-header {
       flex: none;
     }
-  }
-
-  .error-msg {
-    font-size: 0.9rem;
-    color: var(--epinio-error-color);
-    margin: 16px 0 0;
-    text-align: center;
-  }
-
-  [hidden] { display: none !important; }
-
-  .success-msg {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 64px 0;
-    text-align: center;
-    color: var(--epinio-primary-dark);
-  }
-
-  .success-msg svg {
-    color: var(--epinio-success-color);
-  }
-
-  .success-msg h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-  }
-
-  .success-msg p {
-    font-size: 1rem;
-    color: var(--epinio-grayscale-600);
-    margin: 0;
   }
 </style>

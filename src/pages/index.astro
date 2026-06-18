@@ -2,18 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import GetStartedSection from '../components/GetStartedSection.astro';
-import ContactSection from '../components/ContactSection.astro';
 import { getImage } from "astro:assets";
 import heroBg from "../assets/images/epinio-background-hero.svg";
 import dashboardImage from "../assets/images/epinio-dashboard.png";
+import WhereEpinioHelpsSection from '../components/WhereEpinioHelpsSection.astro';
 
 const optimizedHero = await getImage({ src: heroBg, format: "svg" });
 const optimizedDashboard = await getImage({ src: dashboardImage, format: "png" });
 
-const apiUrl = import.meta.env.PUBLIC_API_URL;
-const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
-
-const title = "Epinio | Push to Deploy on Kubernetes";
+const title = "Epinio";
 const description = "Epinio is an Application Development Engine for Kubernetes. Deploy and manage applications with a single command.";
 ---
 
@@ -57,10 +54,9 @@ const description = "Epinio is an Application Development Engine for Kubernetes.
         </a>
       </trailhand-card>
     </GetStartedSection>
+    <WhereEpinioHelpsSection />
 
-    <ContactSection apiUrl={apiUrl} recaptchaSiteKey={recaptchaSiteKey} />
-
-  </main>
+</main>
 </Layout>
 
 <style>
