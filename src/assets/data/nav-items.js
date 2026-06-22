@@ -1,5 +1,10 @@
 export const navItems = [
   {
+    title: "How It Works",
+    url: "/how-it-works",
+    external: false,
+  },
+  {
     title: "Helm Charts",
     url: "https://artifacthub.io/packages/helm/epinio/epinio",
     external: true,
