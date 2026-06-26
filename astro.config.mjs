@@ -10,7 +10,8 @@ const PUBLIC_URL = process.env.PUBLIC_URL || 'https://epinio.io';
 
 // https://astro.build/config
 export default defineConfig({
-  site: PUBLIC_URL,
+  site: 'https://krumio.github.io',
+  base: '/epinio-web-astro',
   markdown: {
     remarkPlugins: [remarkModifiedTime],
   },
