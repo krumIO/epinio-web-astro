@@ -3,7 +3,6 @@ import lit from "@semantic-ui/astro-lit";
 import { remarkModifiedTime } from './src/lib/remark-modified-time.mjs';
 
 import node from "@astrojs/node";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 const PUBLIC_URL = process.env.PUBLIC_URL || 'https://epinio.io';
@@ -15,11 +14,8 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkModifiedTime],
   },
-  output: "server",
+  output: "static",
   integrations: [lit(), mdx(), sitemap()],
-  adapter: node({
-    mode: "standalone",
-  }),
   devToolbar: { enabled: true },
   vite: {
     server: {
