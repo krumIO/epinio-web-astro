@@ -84,9 +84,12 @@
       errorEl.hidden = true;
 
       // trailhand inputs are form-associated, so FormData picks them up by `name`
-      const payload = Object.fromEntries(new FormData(form));
+      const payload: Record<string, unknown> = Object.fromEntries(new FormData(form));
 
       try {
+        const token = await getRecaptchaToken();
+        if (token) payload.recaptchaToken = token;
+
         const res = await fetch(`${API_URL}/contact`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -100,6 +103,15 @@
         errorEl.hidden = false;
       }
     });
+
+    const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
+
+    async function getRecaptchaToken(): Promise<string | null> {
+      const grecaptcha = (window as any).grecaptcha;
+      if (!RECAPTCHA_SITE_KEY || !grecaptcha) return null;
+      await new Promise<void>((r) => grecaptcha.ready(r));
+      return grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'contact_submit' });
+    }
   </script>
 
   <style>
