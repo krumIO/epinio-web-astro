@@ -7,6 +7,7 @@ import heroBg from "../assets/images/epinio-background-hero.svg";
 import dashboardImage from "../assets/images/epinio-dashboard.png";
 import WhereEpinioHelpsSection from '../components/WhereEpinioHelpsSection.astro';
 import WhatsNewSection from '../components/WhatsNewSection.astro';
+import ContactSection from '../components/ContactSection.astro';
 
 const optimizedHero = await getImage({ src: heroBg, format: "svg" });
 const optimizedDashboard = await getImage({ src: dashboardImage, format: "png" });
@@ -57,7 +58,7 @@ const description = "Epinio is an Application Development Engine for Kubernetes.
     </GetStartedSection>
     <WhereEpinioHelpsSection />
     <WhatsNewSection />
-
+    <ContactSection />
 </main>
 </Layout>
 
