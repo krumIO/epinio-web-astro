@@ -5,24 +5,34 @@ export const navItems = [
     external: false,
   },
   {
-    title: "Helm Charts",
-    url: "https://artifacthub.io/packages/helm/epinio/epinio",
+    title: "Blog",
+    url: "http://docs.epinio.io/blog",
     external: true,
   },
   {
-    title: "Slack",
-    url: "https://rancher-users.slack.com/?redir=%2Fmessages%2Fepinio",
-    external: true,
-  },
-  {
-    title: "Documentation",
-    url: "https://docs.epinio.io",
-    external: true,
-  },
-  {
-    title: "GitHub",
-    url: "https://github.com/epinio/epinio/",
-    external: true,
+    title: "Resources",
+    children: [
+      {
+        title: "Helm Charts",
+        url: "https://artifacthub.io/packages/helm/epinio/epinio",
+        external: true,
+      },
+      {
+        title: "Slack",
+        url: "https://rancher-users.slack.com/?redir=%2Fmessages%2Fepinio",
+        external: true,
+      },
+      {
+        title: "Documentation",
+        url: "https://docs.epinio.io",
+        external: true,
+      },
+      {
+        title: "GitHub",
+        url: "https://github.com/epinio/epinio/",
+        external: true,
+      },
+    ],
   },
 ];
 
