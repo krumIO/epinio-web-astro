@@ -5,6 +5,11 @@ export const navItems = [
     external: false,
   },
   {
+    title: "Blog",
+    url: "http://docs.epinio.io/blog",
+    external: true,
+  },
+  {
     title: "Resources",
     children: [
       {
